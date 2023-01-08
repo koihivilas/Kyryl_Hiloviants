@@ -8,7 +8,12 @@ namespace WebAPIBasics
         public void UploadFileTest()
         {
             var client = new Client();
-            client.UploadFile("../../../file.txt", "/WebAPIBasics/file.txt");
+            var metadata = client.UploadFile("../../../file.txt", "/WebAPIBasics/file.txt");
+
+            // Ensure that the response contains the metadata for the file
+            JToken nameToken, contentHashToken;
+            Assert.IsTrue(metadata.TryGetValue("name", out nameToken));
+            Assert.IsTrue(metadata.TryGetValue("content_hash", out contentHashToken));
         }
 
         [Test, Order(2)]
@@ -17,7 +22,6 @@ namespace WebAPIBasics
             var client = new Client();
             var metadata = client.GetFileMetadata("/WebAPIBasics/file.txt");
 
-            // Ensure that the response contains the metadata for the file
             JToken sizeToken, modifiedToken;
             Assert.IsTrue(metadata.TryGetValue("size", out sizeToken));
             Assert.IsTrue(metadata.TryGetValue("name", out modifiedToken));
@@ -27,7 +31,12 @@ namespace WebAPIBasics
         public void DeleteFileTest()
         {
             var client = new Client();
-            client.DeleteFile("/WebAPIBasics/file.txt");
+            var metadata = client.DeleteFile("/WebAPIBasics/file.txt");
+
+            JToken sizeToken, modifiedToken, errorToken;
+            Assert.IsTrue(metadata.TryGetValue("size", out sizeToken));
+            Assert.IsTrue(metadata.TryGetValue("name", out modifiedToken));
+            Assert.IsFalse(metadata.TryGetValue("error", out errorToken));
         }
     }
 }
