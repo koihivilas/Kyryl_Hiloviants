@@ -19,7 +19,9 @@ namespace SeleniumHomeTaskV4_2
             WorkShiftsPageObject WorkShiftsPage = saveWorkShiftsPage.SaveWorkShift();
             WorkShiftsPage.CheckNewRow();
             WorkShiftsPage.SelectNewRow();
-            WorkShiftsPage.DeleteSelectedRows().Confirm().CheckDeletedRow();
+            var res = WorkShiftsPage.DeleteSelectedRows().Confirm().CheckDeletedRow();
+
+            Assert.IsTrue(res);
         }
     }
 }

@@ -57,10 +57,11 @@ namespace SeleniumHomeTaskV4_2.PageObjects
             return new ConfirmationModalPageObject(_webDriver);
         }
 
-        public void CheckDeletedRow()
+        public bool CheckDeletedRow()
         {
             Delays.WaitUntilElementIsLoaded(_webDriver, _recordsNumberTextLocator);
-            Assert.Zero(_webDriver.FindElements(_newRowLocator).Count);
+
+            return _webDriver.FindElements(_newRowLocator).Count == 0;
         }
     }
 }
